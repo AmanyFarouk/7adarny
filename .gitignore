@@ -1,0 +1,38 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.dll
+*.pdb
+
+# Logs
+*.log
+
+# Database files
+*.mdf
+*.ldf
+
+# Secrets
+appsettings.Development.json
+appsettings.Local.json
+
+# Publish
+publish/
+
+# Misc
+Thumbs.db
+*.DS_Store
