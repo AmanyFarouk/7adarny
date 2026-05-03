@@ -24,7 +24,7 @@ namespace _7adarny.API.EndPoints.Enrollments
         //[Authorize(Roles = "Teacher")]
 
         [HttpGet(GetAllEnrollmentsRequest.Route)]
-        [SwaggerOperation(Summary = "Get All Enrollments", Description = "Get all students enrollments details for the teacher", OperationId = "Students.GetAllEnrollments", Tags = new[] { "Enrollments" })]
+        [SwaggerOperation(Summary = "Get All Enrollments", Description = "Get all students enrollments details for the teacher", OperationId = "Enrollments.GetAllEnrollments", Tags = new[] { "Enrollments" })]
         [Produces("application/json")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GetAllEnrollmentsResponse))]
         [SwaggerResponse((int)HttpStatusCode.NotFound, Type = typeof(string))]
