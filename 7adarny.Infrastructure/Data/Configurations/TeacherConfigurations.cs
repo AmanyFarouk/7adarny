@@ -21,7 +21,8 @@ namespace _7adarny.Infrastructure.Data.Configurations
 
             builder.Property(t => t.Email)
                    .HasMaxLength(50)
-                   .IsUnicode(false);
+                   .IsUnicode(false)
+                   .IsRequired();
 
             builder.HasIndex(t => t.Email)
                    .IsUnique();
@@ -77,7 +78,7 @@ namespace _7adarny.Infrastructure.Data.Configurations
             builder.HasMany(t => t.Branches)
                    .WithOne( b=> b.Teacher)
                    .HasForeignKey(t => t.TeacherId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

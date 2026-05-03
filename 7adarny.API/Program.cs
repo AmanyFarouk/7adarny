@@ -1,7 +1,13 @@
+using _7adarny.API.Extensions;
+using _7adarny.Application.Contracts.Interfaces;
 using _7adarny.Infrastructure.Data;
+using _7adarny.Infrastructure.Reposiotries;
+using EduEnroll.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace _7adarny.API
 {
@@ -15,8 +21,28 @@ namespace _7adarny.API
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+                c.TagActionsBy(api =>
+                {
+                    var tags = api.ActionDescriptor.EndpointMetadata
+                        .OfType<SwaggerOperationAttribute>()
+                        .SelectMany(a => a.Tags)
+                        .ToList();
+                    if (tags.Count > 0)
+                        return tags;
+                    return new List<string> { "Default" };
+                });
+            });
+
+            //add dbcontext
+            builder.Services.AddDatabase(builder.Configuration);
+            //register mediatR                 
+            builder.Services.AddMediatRServices();
+            //register Dependency Injection
+            builder.Services.AddApplicationServices();
             var app = builder.Build();
 
             #region Update-Database
@@ -30,6 +56,9 @@ namespace _7adarny.API
                 var DbContext = Services.GetRequiredService<Context>();
                 //ASK CLR For Creating Object From DbContext Explicitly
                 await DbContext.Database.MigrateAsync();//update-database
+
+                //Seed data
+                await DataSeeder.SeedAsync(DbContext);
             }
             catch (Exception ex)
             {
@@ -44,9 +73,10 @@ namespace _7adarny.API
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/openapi/v1.json", "7adarny API V1");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "7adarny API V1");
+                   options.RoutePrefix = string.Empty;
                 }); 
-                app.MapOpenApi();
+                //app.MapOpenApi();
             }
 
             app.UseHttpsRedirection();

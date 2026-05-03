@@ -14,7 +14,7 @@ namespace _7adarny.Domin.Entities
         public DateTime? ResponsedAt { get; set; }
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;
 
-        public Student Student { get; set; }
+        public Student Student { get; set; } 
         public Group Group { get; set; }
     }
 }

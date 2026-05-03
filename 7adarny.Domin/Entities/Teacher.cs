@@ -14,6 +14,7 @@ namespace _7adarny.Domin.Entities
         public string Phone { get; set; }
         public string? Description { get; set; }
         public string? QualificationDocumentPath { get; set; }
+        public string? SubjectName { get; set; }
         public string PasswordHash { get; set; }
         public TeacherStatus Status { get; set; }=TeacherStatus.PendingApproval;
         public string? QrCode {  get; set; }

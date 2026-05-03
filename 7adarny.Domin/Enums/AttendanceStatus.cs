@@ -8,7 +8,7 @@ namespace _7adarny.Domin.Enums
 {
     public enum AttendanceStatus
     {
-        حاضر,
-        غائب
+        Present,
+        Absent
     }
 }
