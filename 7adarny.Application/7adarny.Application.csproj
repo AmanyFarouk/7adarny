@@ -11,7 +11,6 @@
     <Folder Include="Features\Branches\Commands\" />
     <Folder Include="Features\Grades\Commands\" />
     <Folder Include="Features\Groupss\Commands\" />
-    <Folder Include="Features\Students\Commands\" />
     <Folder Include="Features\Teachers\Commands\" />
   </ItemGroup>
 
@@ -20,6 +19,7 @@
     <PackageReference Include="MediatR" Version="11.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.13" />
     <PackageReference Include="QRCoder" Version="1.7.0" />
   </ItemGroup>
 

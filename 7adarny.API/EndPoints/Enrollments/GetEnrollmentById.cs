@@ -1,6 +1,7 @@
 ﻿using _7adarny.Application.Features.Enrollments.Queries.GetEnrollmentById;
 using Ardalis.ApiEndpoints;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -20,8 +21,8 @@ namespace _7adarny.API.EndPoints.Enrollments
             _handler = handler;
             _mapper = mapper;
         }
-        //[Authorize(Roles = "Student")]
-
+        [Authorize(Roles = "Student")]
+        
         [HttpGet(GetEnrollmentByIdRequest.Route)]
         [SwaggerOperation(Summary = "Get Enrollment By Id", Description = "Get enrollment details by id for the student", OperationId = "Enrollments.GetEnrollmentById", Tags = new[] { "Enrollments" })]
         [Produces("application/json")]

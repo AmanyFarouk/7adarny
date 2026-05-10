@@ -2,12 +2,15 @@ using _7adarny.API.Extensions;
 using _7adarny.Application.Contracts.Interfaces;
 using _7adarny.Infrastructure.Data;
 using _7adarny.Infrastructure.Reposiotries;
+using _7adarny.Infrastructure.Services;
 using EduEnroll.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 
 namespace _7adarny.API
 {
@@ -43,6 +46,29 @@ namespace _7adarny.API
             builder.Services.AddMediatRServices();
             //register Dependency Injection
             builder.Services.AddApplicationServices();
+
+            builder.Services.AddScoped<IOtpService, TwilioOtpService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
+            
+            builder.Services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!))
+                };
+            });
+
+            builder.Services.AddAuthorization();
             var app = builder.Build();
 
             #region Update-Database
