@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
+using System.Security.Claims;
 
 namespace _7adarny.API.EndPoints.Enrollments
 {
@@ -30,12 +31,14 @@ namespace _7adarny.API.EndPoints.Enrollments
         [SwaggerResponse((int)HttpStatusCode.NotFound, Type = typeof(string))]
         public override async Task<ActionResult<GetEnrollmentByIdResponse>> HandleAsync(GetEnrollmentByIdRequest request, CancellationToken cancellationToken = default)
         {
+           var studentId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
            var input= _mapper.Map<GetEnrollmentByIdHandlerInput>(request);
-            var output =await _handler.HandleAsync(input, cancellationToken);
-            if (output == null)
-                return NotFound($"Enrollment with id {request.Id} not found.");
-            var response = _mapper.Map<GetEnrollmentByIdResponse>(output);
-            return response;
+           input.StudentId = studentId;
+           var output =await _handler.HandleAsync(input, cancellationToken);
+           if (output.Enrollment == null)
+               return NotFound($"Enrollment with id {request.Id} not found.");  
+           var response = _mapper.Map<GetEnrollmentByIdResponse>(output);
+           return response;
 
         }
     }

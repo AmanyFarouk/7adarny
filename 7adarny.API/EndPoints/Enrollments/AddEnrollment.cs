@@ -22,7 +22,7 @@ namespace _7adarny.API.EndPoints.Enrollments
             _handler = handler;
             _mapper = mapper;
         }
-        //[Authorize(Roles ="Student")]
+        [Authorize(Roles ="Student")]
         [HttpPost(AddEnrollmentRequest.Route)]
         [SwaggerOperation(Summary = "Add Enrollment", Description = "Add enrollment for student", OperationId = "Enrollments.AddEnrollment", Tags = new[] { "Enrollments" })]
         [Produces("application/json")]
@@ -30,9 +30,7 @@ namespace _7adarny.API.EndPoints.Enrollments
         [SwaggerResponse((int)HttpStatusCode.BadRequest, Type = typeof(string))]
         public override async Task<ActionResult<AddEnrollmentResponse>> HandleAsync([FromBody]AddEnrollmentRequest request, CancellationToken cancellationToken = default)
         {
-            //var studentId = int.Parse(
-            //User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var studentId = 2;
+            var studentId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var input = _mapper.Map<AddEnrollmentHandlerInput>(request);
             input.StudentId=studentId;
             var output = await _handler.HandleAsync(input, cancellationToken);

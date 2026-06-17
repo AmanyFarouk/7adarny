@@ -34,11 +34,13 @@ namespace _7adarny.Application.Features.Enrollments.Queries.GetEnrollmentById
                           INNER JOIN Groups g ON g.Id=e.GroupId
                           INNER JOIN Grades gr ON gr.Id=g.GradeId
                           INNER JOIN Teachers t ON t.Id=g.TeacherId
-                          WHERE e.Id=@EnrollmentId";
+                          WHERE e.Id=@EnrollmentId
+                          AND e.StudentId =@StudentId";
             using var connection = _connection.CreateConnection();
             var result =await connection.QueryFirstOrDefaultAsync<EnrollmentDto>(sql, new
             {
-               input.EnrollmentId 
+               input.EnrollmentId,
+               input.StudentId
             });
 
             output.Enrollment = result;
